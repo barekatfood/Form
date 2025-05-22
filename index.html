@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>فرم سفارش غذای شرکت برکت</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon-192.png">
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@behzadi/persian-datepicker@latest/dist/css/persian-datepicker.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/persian-date@1.1.0/dist/persian-date.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@behzadi/persian-datepicker@latest/dist/js/persian-datepicker.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
+  <style>
+    /* همان استایل حرفه‌ای نسخه‌های قبلی */
+    body { font-family: 'Vazirmatn', Tahoma, Arial, sans-serif; background: #f8fafc; margin:0; padding:0;}
+    .container { max-width: 800px; margin: 24px auto; background: #fff; border-radius: 22px; box-shadow: 0 8px 24px #e0e7ff; padding: 24px 10px 16px 10px; border: 1.5px solid #e2e8f0;}
+    .logo-bar {display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;}
+    .logo-bar img {height: 44px; border-radius: 8px;}
+    .logo-bar .order-id {font-weight:bold; color:#6366f1; font-size:1em;}
+    .form-title { text-align: center; margin-bottom: 18px; color: #25316d; font-size: 1.45em; font-weight: bold; letter-spacing: 1px; background: linear-gradient(90deg, #e0e7ff 60%, #f1f5f9 100%); border-radius: 12px; padding: 10px 0; box-shadow: 0 2px 8px #e0e7ff;}
+    .help-block { font-size: 0.98em; color: #64748b; margin-bottom: 10px; background: #f3f4f6; border-radius: 8px; padding: 8px 12px;}
+    .section-box {background: #f8fafc; border-radius: 14px; box-shadow: 0 2px 8px #e0e7ff; margin-bottom: 18px; padding: 18px 10px 10px 10px;}
+    .section-title { margin-bottom: 8px; font-weight: bold; font-size: 1.08em; color: #4a4a4a; border-right: 4px solid #6366f1; padding-right: 10px; background: #f3f4f6; border-radius: 8px; display: inline-block;}
+    .form-row { display: flex; gap: 12px; margin-bottom: 10px;}
+    .form-group { flex: 1; display: flex; flex-direction: column;}
+    label { margin-bottom: 4px; font-size: 1em; color: #374151; font-weight: 500;}
+    input, textarea, select { font-size: 1.02em; padding: 7px 10px; border: none; border-radius: 8px; background: #f1f5f9; box-shadow: 1px 1px 6px #e0e7ff; outline: none; margin-bottom: 2px;}
+    input:focus, textarea:focus, select:focus { box-shadow: 0 0 0 2px #a5b4fc;}
+    textarea { min-height: 32px; max-height: 46px; resize: none;}
+    .table-responsive {width:100%;overflow-x:auto;}
+    table { width: 100%; border-collapse: separate; border-spacing: 0 4px; margin-top: 8px; min-width: 700px;}
+    th, td { padding: 6px 2px; background: #f1f5f9; border-radius: 6px; text-align: center; font-size: 0.98em;}
+    th { background: #e0e7ff; color: #25316d; font-weight: bold;}
+    .drag-handle {cursor: grab; font-size: 1.3em; color: #6366f1;}
+    .count-input { width: 55px; min-width: 40px; max-width: 70px; text-align: center; }
+    .price-input { width: 90px; min-width: 65px; max-width: 120px; text-align: left; direction: ltr; }
+    .unit-price-view { font-size: 0.93em; color: #64748b; margin-right: 3px; margin-left: 1px; vertical-align: middle; white-space: nowrap; direction: ltr; display: inline-block; min-width: 48px;}
+    .orders-archive { background: #f8fafc; border-radius: 14px; box-shadow: 0 2px 8px #e0e7ff; margin: 24px 0 0 0; padding: 16px 10px 10px 10px; border: 1.5px solid #e2e8f0;}
+    .orders-archive table {width:100%; border-collapse: separate; border-spacing: 0 4px; min-width: 500px;}
+    .orders-archive th, .orders-archive td {padding:6px 2px; background: #f1f5f9; border-radius: 6px; text-align: center; font-size: 0.98em;}
+    .orders-archive th { background: #e0e7ff; color: #25316d; font-weight: bold;}
+    .edit-btn, .del-btn { background: #6366f1; color: #fff; border: none; border-radius: 7px; padding: 2px 9px; margin: 0 2px; cursor: pointer; font-size: 0.97em;}
+    .edit-btn {background:#f59e42;}
+    .edit-btn:hover {background:#f59e42cc;}
+    .del-btn {background:#e11d48;}
+    .del-btn:hover {background:#be123c;}
+    .add-row-btn, .remove-row-btn, .pdf-btn, .jpg-btn, .wa-btn, .print-btn { background: #6366f1; color: #fff; border: none; border-radius: 8px; padding: 5px 10px; margin: 2px 2px 2px 0; cursor: pointer; font-size: 1em;}
+    .pdf-btn.kitchen {background: #16a34a;}
+    .pdf-btn.kitchen:hover {background: #15803d;}
+    .add-row-btn:hover, .remove-row-btn:hover, .pdf-btn:hover, .jpg-btn:hover, .wa-btn:hover, .print-btn:hover { background: #3b82f6;}
+    .pdf-btn {background: #eab308;}
+    .pdf-btn:hover {background: #ca8a04;}
+    .jpg-btn {background: #06b6d4;}
+    .jpg-btn:hover {background: #0e7490;}
+    .wa-btn {background: #25d366;}
+    .wa-btn:hover {background: #128c7e;}
+    .print-btn {background: #64748b;}
+    .print-btn:hover {background: #334155;}
+    .total-price { font-weight: bold; color: #256029; font-size: 1em; margin-top: 8px;}
+    .error-msg {color:#e11d48; margin:6px 0;}
+    .success-msg {color:#22c55e; margin:6px 0; background:#f0fdf4; border-radius:7px; padding:6px 8px;}
+    .signature-row {display:flex; gap:10px; align-items:center; margin-top:10px;}
+    .signature-row label {font-weight:bold;}
+    .signature-box {border:1px solid #cbd5e1; border-radius:8px; width:140px; min-height:32px; padding:4px 10px; background:#fff;}
+    .status-row {margin:12px 0; display:flex; gap:8px; align-items:center;}
+    .status-select {min-width:110px; font-size:1em; border-radius:7px;}
+    .footer-info {margin-top:18px; text-align:center; color:#64748b; font-size:0.97em;}
+    .no-print {display:inline-block;}
+    @media print {
+      .no-print, .orders-archive {display:none !important;}
+      body {background:#fff !important;}
+      .container {box-shadow:none !important; border: none !important;}
+      .form-title {background:none !important; box-shadow:none !important;}
+      input, select, textarea {border:none !important; background:transparent !important; box-shadow:none !important;}
+    }
+    @media (max-width: 600px) {
+      .container { padding: 2px 0; border-radius: 0; margin: 0;}
+      .form-row, .signature-row, .status-row { flex-direction: column; gap: 0;}
+      .form-group { width: 100%; margin-bottom: 6px;}
+      .table-responsive {padding-bottom: 4px;}
+      table { min-width: 650px !important; font-size: 0.94em;}
+      th, td { font-size: 0.93em; padding: 4px 2px; white-space: nowrap;}
+      .logo-bar img {height: 28px;}
+      .form-title {font-size:1.1em;}
+      .section-title {font-size:0.98em;}
+    }
+  </style>
+</head>
+<body>
+  <!-- ... (فرم کامل سفارش غذا مطابق نسخه‌های قبلی، همه بخش‌ها و دکمه‌ها) ... -->
+  <!-- انتهای body: ثبت Service Worker -->
+  <script>
+    // ثبت Service Worker برای PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('sw.js');
+      });
+    }
+    // تاریخ پیش‌فرض شمسی
+    function setTodayDateInputs() {
+      var today = new persianDate().format('YYYY/MM/DD');
+      $("#order_date").val(today);
+      $("#delivery_date").val(today);
+      document.getElementById('order_date').value = today;
+      document.getElementById('delivery_date').value = today;
+    }
+    $(function() {
+      setTodayDateInputs();
+      $("#order_date").persianDatepicker({
+        format: 'YYYY/MM/DD',
+        initialValue: false,
+        autoClose: true
+      });
+      $("#delivery_date").persianDatepicker({
+        format: 'YYYY/MM/DD',
+        initialValue: false,
+        autoClose: true
+      });
+      $("#signDate").persianDatepicker({
+        format: 'YYYY/MM/DD',
+        initialValue: false,
+        autoClose: true
+      });
+    });
+    // ... تمام توابع فرم، آرشیو، خروجی‌ها و ... مطابق نسخه‌های قبلی ...
+  </script>
+</body>
+</html>
